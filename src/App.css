@@ -63,8 +63,27 @@ body {
   color: white;
 }
 .logo-div {
-  background-color: red;
+  /* background-color: red; */
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.logo-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 10px;
+}
+
+.logo-div img {
+  width: 60px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.logo-div img:hover {
+  transform: scale(1.05);
 }
