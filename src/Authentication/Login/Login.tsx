@@ -3,6 +3,10 @@ import Input from "../../Components/UI/Input";
 import "./login.css";
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   return (
     <div className="login-main">
       <h3>Log in</h3>
