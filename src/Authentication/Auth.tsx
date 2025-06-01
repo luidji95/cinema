@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Login from "./Login/Login";
 import { supabase } from "../Supabase/supabaseClient";
+import Registration from "./Registration/Registration";
 
 const Auth = () => {
+  const [isLogin, setIsLogin] = useState(false);
   return (
     <div className="auth-main">
       <div className="logo-div">
@@ -13,7 +15,11 @@ const Auth = () => {
         ></img>
         <h3>cinema 100</h3>
       </div>
-      <Login />
+      {isLogin ? (
+        <Login switchToRegister={() => setIsLogin(false)} />
+      ) : (
+        <Registration switchToLogin={() => setIsLogin(true)} />
+      )}
     </div>
   );
 };
