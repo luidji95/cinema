@@ -63,10 +63,14 @@ export default function Login({ switchToRegister, setIsLoggedIn }: Props) {
       </div>
       <div className="haveAcc">
         <p>
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <a className="a-style" onClick={switchToRegister}>
-            Sign up
-          </a>
+            Sign in
+          </a>{" "}
+          <br></br>{" "}
+        </p>
+        <p>
+          <a className="a-style">Or, Log in as guest</a>
         </p>
       </div>
     </form>
