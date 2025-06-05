@@ -1,0 +1,11 @@
+.navigation-main {
+  background-color: aliceblue;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navigation-right {
+  display: flex;
+  gap: 30px;
+}

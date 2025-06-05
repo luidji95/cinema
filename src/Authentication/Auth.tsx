@@ -8,13 +8,6 @@ export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    // Provera da li je korisnik već ulogovan
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) setIsLoggedIn(true);
-    });
-  }, []);
-
   if (isLoggedIn) {
     return <Dashboard />;
   }
@@ -41,3 +34,12 @@ export default function Auth() {
     </div>
   );
 }
+
+// NAPRAVITI TABELU MOVIS U SPABASE
+// IZ DATA.TS POKUPITI FILMOVE U BAZU
+// U TABELU MOVIES 1NA1 UPISI POLJA KOJA IMAS U SVAKOM MOVIES (RANK, NAME, AUTHOR...)
+// KAD TO NAPRAVIM NA USEEFFECT DOHVATI TE FILMOVE
+
+// POKUSATI SLEDECU STVAR : NAPRAVITI SKRIPTU KOJA CE DA NA KLIK RADI UPLOAD FILMOVA
+// TA SKRIPTA TREBA DA RADI SLEDECE : OBRISE SVE FILMOVE IZ BAZE, ONDA RADI ITERACIJU NAD DATA.TS I SVAKI FILM UPLOADUJE U TABELU MOVIES
+//
