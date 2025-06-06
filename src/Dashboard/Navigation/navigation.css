@@ -1,11 +1,26 @@
 .navigation-main {
-  background-color: aliceblue;
+  background-color: #161d2f;
+  color: white;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 20px 50px;
 }
 .navigation-right {
   display: flex;
   gap: 30px;
+}
+.navigation-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.navigation-left img {
+  width: 40px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
 }
