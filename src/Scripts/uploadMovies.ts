@@ -1,25 +1,56 @@
+// import { createClient } from "@supabase/supabase-js";
+// import { data } from "../src/data/dataMovies";
+
+// const supabase = createClient(
+//   "https://vihdejdhouasksfmldlv.supabase.co",
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpaGRlamRob3Vhc2tzZm1sZGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyODcwNTAsImV4cCI6MjA2Mzg2MzA1MH0._3z56pwXSXSEU9icEKrbavVwwqxKwVUi771SHtz7SWQ"
+// );
+
+// const uploadMovies = async () => {
+//   try {
+//     console.log(" Brišem postojeće filmove...");
+//     await supabase.from("movies").delete().neq("id", "");
+
+//     console.log(" Ubacujem nove filmove...");
+//     for (const movie of data) {
+//       const { error } = await supabase.from("movies").insert([movie]);
+//       if (error) {
+//         console.error(` ${movie.title} nije dodat:`, error.message);
+//       } else {
+//         console.log(` Dodat film: ${movie.title}`);
+//       }
+//     }
+//   } catch (err) {
+//     console.error(" Došlo je do greške:", err);
+//   }
+// };
+
+// uploadMovies();
+// src/utils/uploadMovies.ts
 import { createClient } from "@supabase/supabase-js";
-import { data } from "../src/data/dataMovies";
-import { singleMovie } from "../src/types/movieTypes";
+import { data } from "../MoviesData/dataMovies";
 
-const supabase = createClient();
-//   "https://ovde ide moj projekat.supabase.co",
-//   "YOUR_ANON_KEY" // ovde cu da upacim anon key
+const supabase = createClient(
+  "https://vihdejdhouasksfmldlv.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpaGRlamRob3Vhc2tzZm1sZGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyODcwNTAsImV4cCI6MjA2Mzg2MzA1MH0._3z56pwXSXSEU9icEKrbavVwwqxKwVUi771SHtz7SWQ"
+);
 
-const uploadMovies = async () => {
-  try {
-    await supabase.from("movies").delete().neq("id", "");
-    for (const movie of data) {
-      const { error } = await supabase.from("movies").insert([movie]);
-      if (error) {
-        console.error(`Greška pri unosu filma ${movie.title}:`, error.message);
-      } else {
-        console.log(`✅ Dodat film: ${movie.title}`);
-      }
+export const uploadMovies = async () => {
+  console.log("Supabase client:", supabase);
+
+  console.log("🧹 Brišem postojeće filmove...");
+  await supabase.from("movies").delete().neq("id", "");
+
+  console.log("🎬 Ubacujem filmove...");
+  for (const movie of data) {
+    const { error } = await supabase
+      .from("movies")
+      .upsert([movie], { onConflict: "id" });
+
+    if (error) {
+      console.error(`❌ ${movie.title} nije dodat:`, error.message);
+    } else {
+      console.log(`✅ Dodat film: ${movie.title}`);
     }
-  } catch (err) {
-    console.error("🔥 Došlo je do greške:", err);
   }
 };
-
-uploadMovies();

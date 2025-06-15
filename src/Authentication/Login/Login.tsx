@@ -25,6 +25,11 @@ export default function Login({ switchToRegister, setIsLoggedIn }: Props) {
     const isValid = validate(formData);
     if (!isValid) return;
 
+    if (!formData.email || !formData.password) {
+      setServerError("Email i lozinka su obavezni.");
+      return;
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email: formData.email,
       password: formData.password,
