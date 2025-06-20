@@ -9,10 +9,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     const init = async () => {
-      await uploadMovies(); // ✅ prvo ubaci filmove u bazu
+      await uploadMovies();
 
       const { data, error } = await supabase.from("movies").select("*");
-      console.log("🎥 Fetchovani filmovi:", data);
+      console.log(" Fetchovani filmovi:", data);
 
       if (error) {
         console.error("Greška pri dohvatanju filmova:", error.message);
