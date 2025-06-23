@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../Supabase/supabaseClient";
 import { uploadMovies } from "../Scripts/uploadMovies";
 import Navigation from "./Navigation/Navigation";
+import MovieCard from "./MovieCard/MovieCard";
 
 const Dashboard = () => {
   const [movies, setMovies] = useState<singleMovie[]>([]);
@@ -36,13 +37,15 @@ const Dashboard = () => {
       ) : (
         <div className="movies-grid">
           {movies.map((movie) => (
-            <div className="movie-card" key={movie.id}>
-              <img src={movie.thumbnail} alt={movie.title} />
-              <h3>{movie.title}</h3>
-              <p>Ocena: {movie.rating}</p>
-              <p>{movie.year}</p>
-              <p>{movie.writers}</p>
-            </div>
+            <MovieCard
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              thumbnail={movie.thumbnail}
+              rating={movie.rating}
+              year={movie.year}
+              writers={movie.writers}
+            />
           ))}
         </div>
       )}
