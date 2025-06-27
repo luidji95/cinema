@@ -3,6 +3,7 @@ import { supabase } from "../Supabase/supabaseClient";
 import { uploadMovies } from "../Scripts/uploadMovies";
 import Navigation from "./Navigation/Navigation";
 import MovieCard from "./MovieCard/MovieCard";
+import MoviesSlider from "./MoviesSlider";
 
 const Dashboard = () => {
   const [movies, setMovies] = useState<singleMovie[]>([]);
@@ -31,6 +32,7 @@ const Dashboard = () => {
     <div>
       <Navigation />
       <h1>🎬 Prikaz filmova</h1>
+      <MoviesSlider />
 
       {loading ? (
         <p>Učitavanje filmova...</p>
@@ -44,7 +46,7 @@ const Dashboard = () => {
               thumbnail={movie.thumbnail}
               rating={movie.rating}
               year={movie.year}
-              writers={movie.writers}
+              genre={movie.genre}
             />
           ))}
         </div>

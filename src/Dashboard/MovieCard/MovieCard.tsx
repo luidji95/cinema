@@ -1,4 +1,3 @@
-// components/MovieCard.tsx
 type MovieCardProps = {
   id: string;
   title: string;
@@ -6,6 +5,7 @@ type MovieCardProps = {
   rating: string;
   year: number;
   writers: string;
+  genre: string;
 };
 
 const MovieCard = ({
@@ -14,7 +14,7 @@ const MovieCard = ({
   thumbnail,
   rating,
   year,
-  writers,
+  genre,
 }: MovieCardProps) => {
   return (
     <div className="movie-card" key={id}>
@@ -22,7 +22,7 @@ const MovieCard = ({
       <h3>{title}</h3>
       <p>Ocena: {rating}</p>
       <p>{year}</p>
-      <p>{writers}</p>
+      <p>{genre}</p>
     </div>
   );
 };
