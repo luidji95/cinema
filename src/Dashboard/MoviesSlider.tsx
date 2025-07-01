@@ -1,8 +1,7 @@
-
 import { useState } from "react";
-import MovieCard from "./MovieCard";
-import "./MoviesSlider.css";
-import c
+
+import { currentMovies } from "../MoviesData/currentMovies";
+import MovieCard from "./MovieCard/MovieCard";
 
 const MoviesSlider = () => {
   const [currentGroup, setCurrentGroup] = useState(0);

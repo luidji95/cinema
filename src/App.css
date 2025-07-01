@@ -87,3 +87,100 @@ body {
 .logo-div img:hover {
   transform: scale(1.05);
 }
+
+/* dashboard.css */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.movie-card {
+  background: #1e1e1e;
+  color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 0 8px #333;
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.movies-slider-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.slider-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.movies-slider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.slider-arrow {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.slider-arrow:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
+
+.movies-group {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  flex-grow: 1;
+}
+
+@media (max-width: 1024px) {
+  .movies-group {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .movies-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .slider-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movies-group {
+    grid-template-columns: 1fr;
+  }
+
+  .slider-arrow {
+    padding: 0.3rem 0.7rem;
+    font-size: 1.2rem;
+  }
+}
