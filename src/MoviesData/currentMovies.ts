@@ -235,4 +235,26 @@ export const currentMovies = [
     ],
     imdbid: "tt0407887",
   },
+  {
+    rank: 15,
+    title: "Star Wars: Episode V - The Empire Strikes Back",
+    thumbnail:
+      "https://m.media-amazon.com/images/M/MV5BYmU1NDRjNDgtMzhiMi00NjZmLTg5NGItZDNiZjU5NTU4OTE0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX45_CR0,0,45,67_AL_.jpg",
+    rating: "8.7",
+    id: "top15",
+    year: 1980,
+    image:
+      "https://m.media-amazon.com/images/M/MV5BYmU1NDRjNDgtMzhiMi00NjZmLTg5NGItZDNiZjU5NTU4OTE0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_QL75_UX380_CR0,15,380,562_.jpg",
+    description:
+      "After the Rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued across the galaxy by Darth Vader and bounty hunter Boba Fett.",
+    trailer: "https://www.youtube.com/embed/JNwNXF9Y6kY",
+    genre: ["Action", "Adventure", "Fantasy"],
+    director: ["Irvin Kershner"],
+    writers: [
+      "Leigh Brackett (screenplay by)",
+      "Lawrence Kasdan (screenplay by)",
+      "George Lucas (story by)",
+    ],
+    imdbid: "tt0080684",
+  },
 ];
