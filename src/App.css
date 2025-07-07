@@ -184,3 +184,32 @@ body {
     font-size: 1.2rem;
   }
 }
+
+.slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.slider-window {
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: 100%;
+}
+
+.slide {
+  display: flex;
+  flex: 0 0 100%;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.slide > * {
+  flex: 1;
+  max-width: 25%;
+}
