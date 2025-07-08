@@ -5,7 +5,6 @@ import MovieCard from "./MovieCard/MovieCard";
 const MoviesSlider = () => {
   const moviesPerGroup = 4;
 
-  // Podeli filmove u grupe po 4
   const groupMovies = () => {
     const groups = [];
     for (let i = 0; i < currentMovies.length; i += moviesPerGroup) {
@@ -27,7 +26,18 @@ const MoviesSlider = () => {
 
   return (
     <div className="movies-slider-container">
-      <h2 className="slider-title">Currently trending</h2>
+      <div className="slider-title-nav">
+        <h2 className="slider-title">Currently trending</h2>
+        <div className="slider-indicator">
+          {movieGroups.map((_, i) => (
+            <div
+              key={i}
+              className={`indicator-dot ${i === index ? "active" : ""}`}
+            ></div>
+          ))}
+        </div>
+      </div>
+
       <div className="slider">
         <button className="slider-arrow left" onClick={handlePrev}>
           &lt;
@@ -44,11 +54,12 @@ const MoviesSlider = () => {
                   <MovieCard
                     key={movie.id + groupIndex}
                     id={movie.id}
-                    title={movie.title}
+                    // title={movie.title}
                     thumbnail={movie.thumbnail}
-                    rating={movie.rating}
-                    year={movie.year}
-                    genre={movie.genre.join(", ")}
+                    image={movie.image}
+                    // rating={movie.rating}
+                    // year={movie.year}
+                    // genre={movie.genre.join(", ")}
                   />
                 ))}
               </div>
@@ -59,10 +70,6 @@ const MoviesSlider = () => {
         <button className="slider-arrow right" onClick={handleNext}>
           &gt;
         </button>
-      </div>
-
-      <div className="slider-indicator">
-        {index + 1}/{movieGroups.length}
       </div>
     </div>
   );

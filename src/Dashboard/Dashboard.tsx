@@ -31,7 +31,7 @@ const Dashboard = () => {
   return (
     <div>
       <Navigation />
-      <h1>🎬 Prikaz filmova</h1>
+
       <MoviesSlider />
 
       {loading ? (
