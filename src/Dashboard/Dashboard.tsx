@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const init = async () => {
-      await uploadMovies();
+      // await uploadMovies();
 
       const { data, error } = await supabase.from("movies").select("*");
       console.log(" Fetchovani filmovi:", data);
@@ -28,6 +28,8 @@ const Dashboard = () => {
     init();
   }, []);
 
+  // napraviti tabelu u bazi tranding movies i dohvatiti i njih i sprmi u state
+
   return (
     <div>
       <Navigation />
@@ -40,13 +42,14 @@ const Dashboard = () => {
         <div className="movies-grid">
           {movies.map((movie) => (
             <MovieCard
-              key={movie.id}
-              id={movie.id}
-              title={movie.title}
-              thumbnail={movie.thumbnail}
-              rating={movie.rating}
-              year={movie.year}
-              genre={movie.genre}
+              {...movie}
+              // key={movie.id}
+              // id={movie.id}
+              // title={movie.title}
+              // thumbnail={movie.thumbnail}
+              // rating={movie.rating}
+              // year={movie.year}
+              // genre={movie.genre}
             />
           ))}
         </div>

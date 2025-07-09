@@ -3,6 +3,7 @@ import { currentMovies } from "../MoviesData/currentMovies";
 import MovieCard from "./MovieCard/MovieCard";
 
 const MoviesSlider = () => {
+  const [index, setIndex] = useState(0);
   const moviesPerGroup = 4;
 
   const groupMovies = () => {
@@ -14,7 +15,6 @@ const MoviesSlider = () => {
   };
 
   const movieGroups = groupMovies();
-  const [index, setIndex] = useState(0);
 
   const handleNext = () => {
     setIndex((prev) => (prev === movieGroups.length - 1 ? 0 : prev + 1));
