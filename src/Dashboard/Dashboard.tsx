@@ -1,40 +1,37 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../Supabase/supabaseClient";
-import { uploadMovies } from "../Scripts/uploadMovies";
 import Navigation from "./Navigation/Navigation";
 import MovieCard from "./MovieCard/MovieCard";
 import MoviesSlider from "./MoviesSlider";
+import type { singleMovie } from "../MoviesData/dataMovies";
+import { uploadMoviesForSlider } from "../Scripts/uploadMovies";
 
 const Dashboard = () => {
   const [movies, setMovies] = useState<singleMovie[]>([]);
+  const [trendingMovies, setTrendingMovies] = useState<singleMovie[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const init = async () => {
-      // await uploadMovies();
+    const fetchAll = async () => {
+      await uploadMoviesForSlider();
+      const { data: moviesData } = await supabase.from("movies").select("*");
+      const { data: trendingData } = await supabase
+        .from("tranding_movies")
+        .select("*");
 
-      const { data, error } = await supabase.from("movies").select("*");
-      console.log(" Fetchovani filmovi:", data);
-
-      if (error) {
-        console.error("Greška pri dohvatanju filmova:", error.message);
-      } else {
-        setMovies(data || []);
-      }
-
+      setMovies(moviesData || []);
+      setTrendingMovies(trendingData || []);
       setLoading(false);
     };
 
-    init();
+    fetchAll();
   }, []);
-
-  // napraviti tabelu u bazi tranding movies i dohvatiti i njih i sprmi u state
 
   return (
     <div>
       <Navigation />
 
-      <MoviesSlider />
+      {!loading && <MoviesSlider movies={trendingMovies} />}
 
       {loading ? (
         <p>Učitavanje filmova...</p>
@@ -42,14 +39,18 @@ const Dashboard = () => {
         <div className="movies-grid">
           {movies.map((movie) => (
             <MovieCard
-              {...movie}
-              // key={movie.id}
-              // id={movie.id}
-              // title={movie.title}
-              // thumbnail={movie.thumbnail}
-              // rating={movie.rating}
-              // year={movie.year}
-              // genre={movie.genre}
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              thumbnail={movie.thumbnail}
+              image={movie.image}
+              rating={movie.rating}
+              year={movie.year}
+              genre={
+                Array.isArray(movie.genre)
+                  ? movie.genre.join(", ")
+                  : movie.genre
+              }
             />
           ))}
         </div>

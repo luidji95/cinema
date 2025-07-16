@@ -1,15 +1,19 @@
 import { useState } from "react";
-import { currentMovies } from "../MoviesData/currentMovies";
 import MovieCard from "./MovieCard/MovieCard";
+import type { singleMovie } from "../MoviesData/dataMovies";
 
-const MoviesSlider = () => {
+type Props = {
+  movies: singleMovie[];
+};
+
+const MoviesSlider = ({ movies }: Props) => {
   const [index, setIndex] = useState(0);
   const moviesPerGroup = 4;
 
   const groupMovies = () => {
     const groups = [];
-    for (let i = 0; i < currentMovies.length; i += moviesPerGroup) {
-      groups.push(currentMovies.slice(i, i + moviesPerGroup));
+    for (let i = 0; i < movies.length; i += moviesPerGroup) {
+      groups.push(movies.slice(i, i + moviesPerGroup));
     }
     return groups;
   };
@@ -54,12 +58,16 @@ const MoviesSlider = () => {
                   <MovieCard
                     key={movie.id + groupIndex}
                     id={movie.id}
-                    // title={movie.title}
+                    title={movie.title}
                     thumbnail={movie.thumbnail}
                     image={movie.image}
-                    // rating={movie.rating}
-                    // year={movie.year}
-                    // genre={movie.genre.join(", ")}
+                    rating={movie.rating}
+                    year={movie.year}
+                    genre={
+                      Array.isArray(movie.genre)
+                        ? movie.genre.join(", ")
+                        : movie.genre
+                    }
                   />
                 ))}
               </div>
