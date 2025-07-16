@@ -13,10 +13,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
-      await uploadMoviesForSlider();
+      // await uploadMoviesForSlider();
       const { data: moviesData } = await supabase.from("movies").select("*");
       const { data: trendingData } = await supabase
-        .from("tranding_movies")
+        .from("trending_movies")
         .select("*");
 
       setMovies(moviesData || []);

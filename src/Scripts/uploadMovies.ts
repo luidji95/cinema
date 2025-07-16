@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { data } from "../MoviesData/dataMovies";
+import { currentMovies } from "../MoviesData/currentMovies";
 
 const supabase = createClient(
   "https://vihdejdhouasksfmldlv.supabase.co",
@@ -28,5 +29,5 @@ export const uploadMovies = async () => {
 };
 
 export const uploadMoviesForSlider = async () => {
-  await uploadToTable("tranding_movies", data);
+  await uploadToTable("trending_movies", currentMovies);
 };
