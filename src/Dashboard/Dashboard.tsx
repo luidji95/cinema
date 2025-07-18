@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalMovies, setTotalMovies] = useState(0);
+  const [index, setIndex] = useState(0);
 
   const perPage = 12;
   const totalPages = Math.ceil(totalMovies / perPage);
@@ -51,7 +52,13 @@ const Dashboard = () => {
     <div>
       <Navigation />
 
-      {!loading && <MoviesSlider movies={trendingMovies} />}
+      {!loading && (
+        <MoviesSlider
+          movies={trendingMovies}
+          index={index}
+          setIndex={setIndex}
+        />
+      )}
 
       {loading ? (
         <p>Učitavanje filmova...</p>

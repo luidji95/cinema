@@ -4,10 +4,11 @@ import type { singleMovie } from "../MoviesData/dataMovies";
 
 type Props = {
   movies: singleMovie[];
+  index: number;
+  setIndex: (index: number) => void;
 };
 
-const MoviesSlider = ({ movies }: Props) => {
-  const [index, setIndex] = useState(0);
+const MoviesSlider = ({ movies, index, setIndex }: Props) => {
   const moviesPerGroup = 4;
 
   const groupMovies = () => {

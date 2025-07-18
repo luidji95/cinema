@@ -90,10 +90,16 @@ body {
 
 /* dashboard.css */
 .movies-grid {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  min-height: 10rem;
   padding: 1rem;
+  gap: 1rem;
 }
 
 .movie-card {
