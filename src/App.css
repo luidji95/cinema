@@ -299,3 +299,7 @@ body {
   font-size: 18px;
   cursor: pointer;
 }
+
+.min-height {
+  min-height: 900px;
+}
