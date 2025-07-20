@@ -7,10 +7,9 @@ import { loginShema } from "../../Validation/authSheme";
 
 interface Props {
   switchToRegister: () => void;
-  setIsLoggedIn: (value: boolean) => void;
 }
 
-export default function Login({ switchToRegister, setIsLoggedIn }: Props) {
+export default function Login({ switchToRegister }: Props) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,7 +39,6 @@ export default function Login({ switchToRegister, setIsLoggedIn }: Props) {
     } else {
       setServerError(null);
       alert("Successfully logged in!");
-      setIsLoggedIn(true);
     }
   };
 

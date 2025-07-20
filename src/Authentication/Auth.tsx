@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { supabase } from "../Supabase/supabaseClient";
 import Login from "./Login/Login";
 import Registration from "./Registration/Registration";
 import Dashboard from "../Dashboard/Dashboard";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, loading } = useContext(AuthContext);
 
-  if (isLoggedIn) {
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
+
+  if (user) {
     return <Dashboard />;
   }
 
@@ -24,15 +29,10 @@ export default function Auth() {
       </div>
 
       {isLogin ? (
-        <Login
-          switchToRegister={() => setIsLogin(false)}
-          setIsLoggedIn={setIsLoggedIn}
-        />
+        <Login switchToRegister={() => setIsLogin(false)} />
       ) : (
         <Registration switchToLogin={() => setIsLogin(true)} />
       )}
     </div>
   );
 }
-
-

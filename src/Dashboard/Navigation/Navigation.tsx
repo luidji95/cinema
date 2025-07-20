@@ -1,6 +1,10 @@
 import "./navigation.css";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import Auth from "../../Authentication/Auth";
 
 const Navigation = () => {
+  const { user } = useContext(AuthContext);
   return (
     <div className="navigation-main">
       <div className="navigation-left">
@@ -12,7 +16,7 @@ const Navigation = () => {
         <p>cinema 100</p>
       </div>
       <div className="navigation-right">
-        <p>Welcome back name</p>
+        <p>Welcome {user?.username ? user.username : "Guest"}</p>
         <p>Log out</p>
         <img src="logut"></img>
       </div>
