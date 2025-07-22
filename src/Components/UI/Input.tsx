@@ -28,3 +28,11 @@ const Input = ({
 };
 
 export default Input;
+
+
+// PAGES - folder za stranice 
+// pages/login: 
+//   index.tsx - glavna komponenta koja imporutuje sve druge 
+//   components/ 
+//       header.tsx
+//       footer.tsx
