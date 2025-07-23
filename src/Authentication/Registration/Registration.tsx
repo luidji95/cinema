@@ -44,7 +44,7 @@ const Registration = ({ switchToLogin }) => {
     } else {
       setServerError(null);
       alert("Successfully registered! Please check your email.");
-      switchToLogin();
+      switchToLogin(false);
     }
   };
 

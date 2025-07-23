@@ -1,10 +1,19 @@
 import "./navigation.css";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import Auth from "../../Authentication/Auth";
+import { supabase } from "../../Supabase/supabaseClient";
 
 const Navigation = () => {
   const { user } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log("Logout failed", error.message);
+    } else {
+      console.log("Logged out successfully");
+    }
+  };
   return (
     <div className="navigation-main">
       <div className="navigation-left">
@@ -17,7 +26,7 @@ const Navigation = () => {
       </div>
       <div className="navigation-right">
         <p>Welcome {user?.username ? user.username : "Guest"}</p>
-        <p>Log out</p>
+        <p onClick={handleLogout}>Log out</p>
         <img src="logut"></img>
       </div>
     </div>
