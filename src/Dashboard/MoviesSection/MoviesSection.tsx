@@ -38,7 +38,6 @@ const MoviesSection = ({ perPage }: Props) => {
     fetchMovies();
   }, [currentPage, perPage]);
 
-  
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
 

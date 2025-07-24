@@ -100,6 +100,7 @@ body {
   min-height: 10rem;
   padding: 1rem;
   gap: 1rem;
+  min-height: 1100px;
 }
 
 .movie-card {
@@ -303,3 +304,8 @@ body {
 .min-height {
   min-height: 900px;
 }
+
+/* .movies-section {
+  min-height: 1000px;
+  scroll-margin-top: 100px;
+} */
