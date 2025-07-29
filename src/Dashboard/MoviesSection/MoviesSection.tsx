@@ -38,15 +38,43 @@ const MoviesSection = ({ perPage }: Props) => {
     fetchMovies();
   }, [currentPage, perPage]);
 
+  useEffect(() => {
+    if (!loading) {
+      const images = sectionRef.current?.querySelectorAll("img") || [];
+      let loadedCount = 0;
+
+      images.forEach((img) => {
+        if (img.complete) {
+          loadedCount++;
+        } else {
+          img.addEventListener("load", handleLoad);
+          img.addEventListener("error", handleLoad);
+        }
+      });
+
+      function handleLoad() {
+        loadedCount++;
+        if (loadedCount === images.length) {
+          requestAnimationFrame(() => {
+            sectionRef.current?.scrollIntoView({
+              behavior: "smooth",
+              block: "end",
+            });
+          });
+        }
+      }
+
+      return () => {
+        images.forEach((img) => {
+          img.removeEventListener("load", handleLoad);
+          img.removeEventListener("error", handleLoad);
+        });
+      };
+    }
+  }, [loading, currentPage]);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-
-    requestAnimationFrame(() => {
-      sectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-    });
   };
 
   return (
