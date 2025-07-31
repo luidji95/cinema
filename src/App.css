@@ -149,6 +149,12 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
+.left {
+  margin-right: 10px;
+}
+.right {
+  margin-left: 10px;
+}
 
 .slider-arrow:hover {
   background-color: #555;
@@ -344,3 +350,7 @@ body {
   width: 16px;
   height: 16px;
 } */
+
+.min-height {
+  min-height: 100vh; /* visina da sekcija zauzme barem ceo ekran */
+}
