@@ -5,8 +5,19 @@ import { useValidation } from "../../Hooks/useValidation";
 import { registrationShema } from "../../Validation/authSheme";
 import { supabase } from "../../Supabase/supabaseClient";
 
-const Registration = ({ switchToLogin }) => {
-  const [formData, setFormData] = useState({
+interface Props {
+  switchToLogin: () => void;
+}
+
+const Registration = ({ switchToLogin }: Props) => {
+  const [formData, setFormData] = useState<{
+    firstName: string;
+    secondName: string;
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }>({
     firstName: "",
     secondName: "",
     username: "",
@@ -44,7 +55,7 @@ const Registration = ({ switchToLogin }) => {
     } else {
       setServerError(null);
       alert("Successfully registered! Please check your email.");
-      switchToLogin(false);
+      switchToLogin();
     }
   };
 
@@ -56,34 +67,51 @@ const Registration = ({ switchToLogin }) => {
           placeholder="First Name"
           value={formData.firstName}
           onChange={(e) =>
-            setFormData({ ...formData, firstName: e.target.value })
+            setFormData({
+              ...formData,
+              firstName: (e.target as HTMLInputElement).value,
+            })
           }
         />
         <Input
           placeholder="Second Name"
           value={formData.secondName}
           onChange={(e) =>
-            setFormData({ ...formData, secondName: e.target.value })
+            setFormData({
+              ...formData,
+              secondName: (e.target as HTMLInputElement).value,
+            })
           }
         />
         <Input
           placeholder="Username"
           value={formData.username}
           onChange={(e) =>
-            setFormData({ ...formData, username: e.target.value })
+            setFormData({
+              ...formData,
+              username: (e.target as HTMLInputElement).value,
+            })
           }
         />
         <Input
           placeholder="Email"
           value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              email: (e.target as HTMLInputElement).value,
+            })
+          }
         />
         <Input
           placeholder="Password"
           type="password"
           value={formData.password}
           onChange={(e) =>
-            setFormData({ ...formData, password: e.target.value })
+            setFormData({
+              ...formData,
+              password: (e.target as HTMLInputElement).value,
+            })
           }
         />
         <Input
@@ -91,7 +119,10 @@ const Registration = ({ switchToLogin }) => {
           type="password"
           value={formData.confirmPassword}
           onChange={(e) =>
-            setFormData({ ...formData, confirmPassword: e.target.value })
+            setFormData({
+              ...formData,
+              confirmPassword: (e.target as HTMLInputElement).value,
+            })
           }
         />
 

@@ -1,7 +1,7 @@
 type InputProps = {
   type?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   className?: string;
   required?: boolean;
@@ -17,7 +17,7 @@ const Input = ({
 }: InputProps) => {
   return (
     <input
-      type="type"
+      type={type}
       value={value}
       placeholder={placeholder}
       onChange={onChange}
@@ -28,11 +28,3 @@ const Input = ({
 };
 
 export default Input;
-
-
-// PAGES - folder za stranice 
-// pages/login: 
-//   index.tsx - glavna komponenta koja imporutuje sve druge 
-//   components/ 
-//       header.tsx
-//       footer.tsx
