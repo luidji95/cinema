@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import MovieCard from "./MovieCard/MovieCard";
 import type { singleMovie } from "../MoviesData/dataMovies";
 

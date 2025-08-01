@@ -354,3 +354,21 @@ body {
 .min-height {
   min-height: 100vh; /* visina da sekcija zauzme barem ceo ekran */
 }
+.search-results {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.search-result-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.search-result-item:hover {
+  background-color: #f0f0f0;
+}

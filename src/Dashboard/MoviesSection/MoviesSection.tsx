@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "../../Supabase/supabaseClient";
 import MoviesGrid from "../MoviesGrid/MoviesGrid";
 import Pagination from "../Pagination/pagination";
@@ -15,6 +15,7 @@ const MoviesSection = ({ perPage }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const totalPages = Math.ceil(totalMovies / perPage);
+  const paginationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -33,6 +34,8 @@ const MoviesSection = ({ perPage }: Props) => {
       setLoading(false);
     };
 
+    paginationRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+
     fetchMovies();
   }, [currentPage, perPage]);
 
@@ -44,11 +47,13 @@ const MoviesSection = ({ perPage }: Props) => {
         <MoviesGrid movies={movies} />
       )}
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+      <div ref={paginationRef}>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };
