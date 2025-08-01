@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
 
-  const { user, loading } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   // if (loading) {
   //   return <p>Loading...</p>;

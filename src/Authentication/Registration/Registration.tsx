@@ -16,7 +16,7 @@ const Registration = ({ switchToLogin }) => {
   });
 
   const [serverError, setServerError] = useState<string | null>(null);
-  const { validate, errors } = useValidation(registrationShema);
+  const { validate } = useValidation(registrationShema);
 
   const handleRegistration = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,6 +80,7 @@ const Registration = ({ switchToLogin }) => {
         />
         <Input
           placeholder="Password"
+          type="password"
           value={formData.password}
           onChange={(e) =>
             setFormData({ ...formData, password: e.target.value })
@@ -87,20 +88,26 @@ const Registration = ({ switchToLogin }) => {
         />
         <Input
           placeholder="Confirm password"
+          type="password"
           value={formData.confirmPassword}
           onChange={(e) =>
             setFormData({ ...formData, confirmPassword: e.target.value })
           }
         />
+
+        {serverError && (
+          <p style={{ color: "red", marginBottom: "0.5rem" }}>{serverError}</p>
+        )}
+
         <button>Register</button>
       </div>
+
       <div className="haveAcc">
         <p>
           Already have an account?{" "}
           <a className="a-style" onClick={switchToLogin}>
             Sign in
-          </a>{" "}
-          <br></br>{" "}
+          </a>
         </p>
         <p>
           <a className="a-style">Or, Log in as guest</a>

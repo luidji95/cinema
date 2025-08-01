@@ -4,7 +4,7 @@ import Navigation from "./Navigation/Navigation";
 import MoviesSlider from "./MoviesSlider";
 import MoviesSection from "./MoviesSection/MoviesSection";
 import type { singleMovie } from "../MoviesData/dataMovies";
-import SearchBar from "./SearchBar/SearchBar";
+// import SearchBar from "./SearchBar/SearchBar";
 
 const Dashboard = () => {
   const [trendingMovies, setTrendingMovies] = useState<singleMovie[]>([]);
@@ -32,7 +32,7 @@ const Dashboard = () => {
         />
       )}
 
-      <SearchBar />
+      {/* <SearchBar /> */}
 
       <MoviesSection perPage={perPage} />
     </div>
