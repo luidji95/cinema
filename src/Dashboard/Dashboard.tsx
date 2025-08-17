@@ -20,21 +20,23 @@ const Dashboard = () => {
     fetchTrending();
   }, []);
 
+  // Dashboard.tsx (bitni delovi)
   return (
-    <div>
+    <div className="page">
       <Navigation />
 
-      {trendingMovies.length > 0 && (
-        <MoviesSlider
-          movies={trendingMovies}
-          index={index}
-          setIndex={setIndex}
-        />
-      )}
+      {/* zajednički container drži i slider i movies; poravnanje je identično */}
+      <div className="container">
+        {trendingMovies.length > 0 && (
+          <MoviesSlider
+            movies={trendingMovies}
+            index={index}
+            setIndex={setIndex}
+          />
+        )}
 
-      {/* <SearchBar /> */}
-
-      <MoviesSection perPage={perPage} />
+        <MoviesSection perPage={perPage} />
+      </div>
     </div>
   );
 };

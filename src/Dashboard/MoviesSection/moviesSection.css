@@ -1,0 +1,134 @@
+/* Container već koristiš u Dashboard-u (oko Slidera i Movies): .container */
+
+/* ===== MoviesSection layout: GRID levo + PAGINACIJA desno ===== */
+:root {
+  --nav-h: 90px;
+} /* visina fiksne navigacije, prilagodi po potrebi */
+
+.movies-row {
+  display: grid;
+  grid-template-columns: 120px 1fr; /* prvo LEVO paginacija, onda DESNO grid */
+  column-gap: 24px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+.movies-side {
+  position: sticky;
+  top: calc(var(--nav-h) + 12px);
+  height: max-content;
+}
+
+.min-height {
+  min-height: 60vh;
+}
+.scroll-anchor {
+  scroll-margin-top: var(--nav-h);
+}
+
+/* ===== Pagination (vertikalna, mala) – ako već nemaš u pagination.css, može i ovde ===== */
+.pagination {
+  display: flex;
+  gap: 6px;
+}
+.pagination.vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+.pagination .pages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pagination.sm button {
+  border: 1px solid #2b3240;
+  background: #1b212c;
+  color: #e6e9ef;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1;
+  min-height: 28px;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease,
+    transform 80ms ease;
+}
+.pagination.sm button:hover:not(:disabled) {
+  background: #212838;
+  border-color: #3a4152;
+}
+.pagination.sm button.active,
+.pagination.sm button[aria-current="page"] {
+  background: #2a3143;
+  border-color: #b8c0cc;
+  font-weight: 600;
+}
+.pagination.sm button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.pagination.sm button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(120, 180, 255, 0.25);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 960px) {
+  .movies-row {
+    grid-template-columns: 1fr; /* paginacija ispod grida */
+    row-gap: 16px;
+  }
+  .movies-side {
+    position: static;
+  }
+  .pagination.vertical {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pagination .pages {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+/* Wrapper oko grida – drži visinu, omogućava overlay */
+.grid-wrapper {
+  position: relative;
+  /* suptilna tranzicija ne-providnosti za "smooth" utisak */
+  transition: opacity 160ms ease;
+}
+
+/* dok učitava: malo zatamni grid (ostaje na mestu) */
+.grid-wrapper.is-loading {
+  opacity: 0.75;
+}
+
+/* Overlay spiner – preko grida */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(1px); /* suptilno; može i bez */
+  pointer-events: none; /* da klikovi prođu ako treba */
+}
+
+/* Spiner (čist CSS) */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.9);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.movies-main .grid-wrapper {
+  min-height: 60vh;
+}

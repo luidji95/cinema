@@ -372,3 +372,120 @@ body {
 .search-result-item:hover {
   background-color: #f0f0f0;
 }
+
+/* ===== Global page + container ===== */
+.page {
+  background: #0f141b; /* tamna pozadina */
+  min-height: 100dvh;
+}
+
+.container {
+  max-width: 1200px; /* širina stranice */
+  margin-inline: auto;
+  padding-inline: 24px; /* unutrašnji razmak levo/desno */
+}
+
+/* ===== MoviesSection layout: GRID + desna paginacija ===== */
+.movies-row {
+  display: grid;
+  grid-template-columns: 1fr 120px; /* levo grid, desno sidebar 120px */
+  column-gap: 24px; /* razmak između grida i paginacije */
+  align-items: start;
+  margin-top: 24px; /* razmak ispod “Currently trending” */
+}
+
+/* Desna bočna traka (paginacija) */
+:root {
+  --nav-h: 90px; /* visina tvoje fiksne navigacije, prilagodi */
+}
+
+.movies-side {
+  position: sticky;
+  top: calc(var(--nav-h) + 12px);
+  height: max-content;
+}
+
+/* Stabilizacija grida pri učitavanju + sidro za skrol */
+.min-height {
+  min-height: 60vh;
+}
+.scroll-anchor {
+  scroll-margin-top: var(--nav-h);
+}
+
+/* ===== Pagination (vertikalna, mala dugmad) ===== */
+.pagination {
+  display: flex;
+  gap: 6px;
+}
+
+.pagination.vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.pagination .pages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pagination.sm button {
+  border: 1px solid #2b3240;
+  background: #1b212c;
+  color: #e6e9ef;
+  padding: 4px 8px; /* kompaktno */
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1;
+  min-height: 28px;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease,
+    transform 80ms ease;
+}
+
+.pagination.sm button:hover:not(:disabled) {
+  background: #212838;
+  border-color: #3a4152;
+}
+
+.pagination.sm button.active,
+.pagination.sm button[aria-current="page"] {
+  background: #2a3143;
+  border-color: #b8c0cc;
+  font-weight: 600;
+}
+
+.pagination.sm button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagination.sm button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(120, 180, 255, 0.25);
+}
+
+/* ===== Responsive fallback ===== */
+@media (max-width: 960px) {
+  .movies-row {
+    grid-template-columns: 1fr; /* paginacija ispod grida */
+    row-gap: 16px;
+  }
+
+  .movies-side {
+    position: static;
+  }
+
+  .pagination.vertical {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pagination .pages {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

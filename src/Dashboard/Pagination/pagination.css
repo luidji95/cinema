@@ -1,40 +1,45 @@
+/* ===== Pagination (vertikalna, mala) – ako već nemaš u pagination.css, može i ovde ===== */
 .pagination {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 2rem;
+  gap: 6px;
 }
-
-.pagination button {
-  padding: 8px 14px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: #f0f0f0;
-  color: #333;
+.pagination.vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+.pagination .pages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pagination.sm button {
+  border: 1px solid #2b3240;
+  background: #1b212c;
+  color: #e6e9ef;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1;
+  min-height: 28px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
+  transition: background-color 120ms ease, border-color 120ms ease,
+    transform 80ms ease;
 }
-
-.pagination button:hover:not(:disabled) {
-  background-color: #007bff;
-  color: white;
-  transform: translateY(-2px);
+.pagination.sm button:hover:not(:disabled) {
+  background: #212838;
+  border-color: #3a4152;
 }
-
-.pagination button.active {
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
-  transform: scale(1.05);
+.pagination.sm button.active,
+.pagination.sm button[aria-current="page"] {
+  background: #2a3143;
+  border-color: #b8c0cc;
+  font-weight: 600;
 }
-
-.pagination button:disabled {
-  background-color: #e0e0e0;
-  color: #888;
+.pagination.sm button:disabled {
+  opacity: 0.45;
   cursor: not-allowed;
-  box-shadow: none;
+}
+.pagination.sm button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(120, 180, 255, 0.25);
 }

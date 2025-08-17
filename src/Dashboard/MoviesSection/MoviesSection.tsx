@@ -1,12 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../Supabase/supabaseClient";
 import MoviesGrid from "../MoviesGrid/MoviesGrid";
 import Pagination from "../Pagination/pagination";
 import type { singleMovie } from "../../MoviesData/dataMovies";
+import "./moviesSection.css"; // ⬅️ OBAVEZNO
 
-type Props = {
-  perPage: number;
-};
+type Props = { perPage: number };
 
 const MoviesSection = ({ perPage }: Props) => {
   const [movies, setMovies] = useState<singleMovie[]>([]);
@@ -15,9 +14,11 @@ const MoviesSection = ({ perPage }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const totalPages = Math.ceil(totalMovies / perPage);
-  const paginationRef = useRef<HTMLDivElement>(null);
+  const topAnchorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let cancelled = false;
+
     const fetchMovies = async () => {
       setLoading(true);
 
@@ -29,32 +30,57 @@ const MoviesSection = ({ perPage }: Props) => {
         .select("*", { count: "exact" })
         .range(from, to);
 
+      if (cancelled) return;
+
       setMovies(data || []);
       setTotalMovies(count || 0);
       setLoading(false);
     };
 
-    paginationRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-
     fetchMovies();
+    return () => {
+      cancelled = true;
+    };
   }, [currentPage, perPage]);
 
-  return (
-    <div>
-      {loading ? (
-        <p className="min-height">Učitavanje filmova...</p>
-      ) : (
-        <MoviesGrid movies={movies} />
-      )}
+  useEffect(() => {
+    if (!loading && topAnchorRef.current) {
+      requestAnimationFrame(() => {
+        topAnchorRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }, [loading]);
 
-      <div ref={paginationRef}>
+  return (
+    <section className="movies-row">
+      {/* LEVO: paginacija */}
+      <aside className="movies-side">
         <Pagination
+          orientation="vertical"
+          size="sm"
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
+          loading={loading}
         />
+      </aside>
+
+      {/* DESNO: grid */}
+      <div className="movies-main">
+        <div ref={topAnchorRef} className="scroll-anchor" />
+        <div className={`grid-wrapper ${loading ? "is-loading" : ""}`}>
+          <MoviesGrid movies={movies} />
+          {loading && (
+            <div className="grid-overlay" aria-hidden="true">
+              <div className="spinner" />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

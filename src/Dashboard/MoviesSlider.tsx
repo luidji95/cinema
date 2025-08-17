@@ -4,7 +4,7 @@ import type { singleMovie } from "../MoviesData/dataMovies";
 type Props = {
   movies: singleMovie[];
   index: number;
-  setIndex: React.Dispatch<React.SetStateAction<number>>; // ✅ ispravljeno
+  setIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const MoviesSlider = ({ movies, index, setIndex }: Props) => {
@@ -58,16 +58,8 @@ const MoviesSlider = ({ movies, index, setIndex }: Props) => {
                   <MovieCard
                     key={movie.id + groupIndex}
                     id={movie.id}
-                    title={movie.title}
                     thumbnail={movie.thumbnail}
                     image={movie.image}
-                    rating={movie.rating}
-                    year={movie.year}
-                    genre={
-                      Array.isArray(movie.genre)
-                        ? movie.genre.join(", ")
-                        : movie.genre
-                    }
                   />
                 ))}
               </div>
