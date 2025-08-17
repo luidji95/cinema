@@ -1,39 +1,47 @@
-type MovieCardProps = {
+// src/components/MovieCard/MovieCard.tsx
+export type BaseCardProps = {
   id: string;
-  title: string;
   thumbnail: string;
-  image?: string;
-  rating: string;
+  image: string;
+};
+
+export type FullCardProps = BaseCardProps & {
+  variant?: "full"; // default
+  title: string;
+  rating: number;
   year: number;
   genre: string;
 };
 
-const MovieCard = ({
-  id,
-  title,
-  thumbnail,
-  image,
-  rating,
-  year,
-  genre,
-}: MovieCardProps) => {
+export type SliderCardProps = BaseCardProps & {
+  variant: "slider"; // ⬅️ obavezno kad je slider varijanta
+};
+
+// Discriminated union
+export type MovieCardProps = FullCardProps | SliderCardProps;
+
+const MovieCard = (props: MovieCardProps) => {
+  const { image, thumbnail } = props;
+
+  // Zajednički izgled slike/postera...
   return (
-    <div className="movie-card" key={id}>
-      <div className="movie-image-wrapper">
-        <img src={image || thumbnail} alt={title} />
+    <div
+      className={`movie-card ${props.variant === "slider" ? "is-slider" : ""}`}
+    >
+      <img
+        src={thumbnail || image}
+        alt={("title" in props && props.title) || "Poster"}
+      />
 
-        <div className="overlay">
-          <button className="see-more-btn">See more</button>
-          <div className="ribbon">
-            <img src="https://vihdejdhouasksfmldlv.supabase.co/storage/v1/object/sign/bookmarked/ribbon.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iYjc1YTU3Yy1iOWUyLTRhMjAtODY2Ny0wODY2ODcyNTJmMGMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJib29rbWFya2VkL3JpYmJvbi5wbmciLCJpYXQiOjE3NTM1NjAxMzIsImV4cCI6MTc4NTA5NjEzMn0.eLcvuJxSNnlh-nIfBUryqgdUuMz-vjg7MvKTfkAak6k" />
-          </div>
+      {/* Renderuj detalje samo u full varijanti */}
+      {"title" in props && props.variant !== "slider" && (
+        <div className="meta">
+          <h4>{props.title}</h4>
+          <p>
+            {props.year} • ⭐ {props.rating} • {props.genre}
+          </p>
         </div>
-      </div>
-
-      <h3>{title}</h3>
-      <p>{rating}</p>
-      <p>{year}</p>
-      <p>{genre}</p>
+      )}
     </div>
   );
 };

@@ -54,12 +54,14 @@ const MoviesSlider = ({ movies, index, setIndex }: Props) => {
           >
             {movieGroups.map((group, groupIndex) => (
               <div className="slide" key={groupIndex}>
+                // ...u mapi unutar slajda
                 {group.map((movie) => (
                   <MovieCard
                     key={movie.id + groupIndex}
                     id={movie.id}
                     thumbnail={movie.thumbnail}
                     image={movie.image}
+                    variant="slider" // ⬅️ OVO je ključno
                   />
                 ))}
               </div>
