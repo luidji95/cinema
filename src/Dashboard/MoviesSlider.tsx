@@ -54,7 +54,6 @@ const MoviesSlider = ({ movies, index, setIndex }: Props) => {
           >
             {movieGroups.map((group, groupIndex) => (
               <div className="slide" key={groupIndex}>
-                // ...u mapi unutar slajda
                 {group.map((movie) => (
                   <MovieCard
                     key={movie.id + groupIndex}
