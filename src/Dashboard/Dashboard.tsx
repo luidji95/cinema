@@ -20,7 +20,6 @@ const Dashboard = () => {
     fetchTrending();
   }, []);
 
-  // Dashboard.tsx (bitni delovi)
   return (
     <div className="page">
       <Navigation />

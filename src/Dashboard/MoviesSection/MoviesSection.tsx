@@ -3,7 +3,7 @@ import { supabase } from "../../Supabase/supabaseClient";
 import MoviesGrid from "../MoviesGrid/MoviesGrid";
 import Pagination from "../Pagination/pagination";
 import type { singleMovie } from "../../MoviesData/dataMovies";
-import "./moviesSection.css"; // ⬅️ OBAVEZNO
+import "./moviesSection.css";
 
 type Props = { perPage: number };
 

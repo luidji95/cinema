@@ -61,7 +61,7 @@ const MoviesSlider = ({ movies, index, setIndex }: Props) => {
                     id={movie.id}
                     thumbnail={movie.thumbnail}
                     image={movie.image}
-                    variant="slider" // ⬅️ OVO je ključno
+                    variant="slider"
                   />
                 ))}
               </div>

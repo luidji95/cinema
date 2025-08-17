@@ -10,13 +10,13 @@ const MoviesGrid = ({ movies }: Props) => {
     <div className="movies-grid">
       {movies.map((movie) => (
         <MovieCard
-          key={movie.id}
+          variant="full"
           id={movie.id}
-          title={movie.title}
-          thumbnail={movie.thumbnail}
           image={movie.image}
-          rating={movie.rating}
-          year={movie.year}
+          thumbnail={movie.thumbnail}
+          title={movie.title}
+          rating={Number(movie.rating)}
+          year={Number(movie.year)}
           genre={
             Array.isArray(movie.genre) ? movie.genre.join(", ") : movie.genre
           }

@@ -1,4 +1,3 @@
-// src/components/Pagination/pagination.tsx
 import "./pagination.css";
 
 type Orientation = "horizontal" | "vertical";
@@ -11,7 +10,7 @@ type PaginationProps = {
   orientation?: Orientation;
   size?: Size;
   className?: string;
-  loading?: boolean; // ⬅️ novo
+  loading?: boolean;
 };
 
 const Pagination = ({
@@ -21,12 +20,12 @@ const Pagination = ({
   orientation = "vertical",
   size = "sm",
   className = "",
-  loading = false, // ⬅️ novo
+  loading = false,
 }: PaginationProps) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const go = (page: number) => {
-    if (loading) return; // blokiraj klik tokom fetch-a
+    if (loading) return;
     onPageChange(page);
   };
 
@@ -50,7 +49,7 @@ const Pagination = ({
             className={page === currentPage ? "active" : ""}
             onClick={() => go(page)}
             aria-current={page === currentPage ? "page" : undefined}
-            disabled={loading} // ⬅️ sprečava spam klik dok traje fetch
+            disabled={loading}
           >
             {page}
           </button>

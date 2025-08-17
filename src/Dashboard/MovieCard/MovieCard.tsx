@@ -1,40 +1,27 @@
-// src/components/MovieCard/MovieCard.tsx
 export type BaseCardProps = {
   id: string;
   thumbnail: string;
   image: string;
 };
 
-export type FullCardProps = BaseCardProps & {
-  variant?: "full"; // default
-  title: string;
-  rating: number;
-  year: number;
-  genre: string;
-};
-
-export type SliderCardProps = BaseCardProps & {
-  variant: "slider"; // ⬅️ obavezno kad je slider varijanta
-};
-
-// Discriminated union
-export type MovieCardProps = FullCardProps | SliderCardProps;
+export type MovieCardProps =
+  | ({ variant: "slider" } & BaseCardProps)
+  | ({
+      variant: "full";
+      title: string;
+      rating: number;
+      year: number;
+      genre: string;
+    } & BaseCardProps);
 
 const MovieCard = (props: MovieCardProps) => {
-  const { image, thumbnail } = props;
+  const isSlider = props.variant === "slider";
+  const alt = isSlider ? "Poster" : props.title;
 
-  // Zajednički izgled slike/postera...
   return (
-    <div
-      className={`movie-card ${props.variant === "slider" ? "is-slider" : ""}`}
-    >
-      <img
-        src={thumbnail || image}
-        alt={("title" in props && props.title) || "Poster"}
-      />
-
-      {/* Renderuj detalje samo u full varijanti */}
-      {"title" in props && props.variant !== "slider" && (
+    <div className={`movie-card ${isSlider ? "is-slider" : ""}`}>
+      <img src={props.thumbnail || props.image} alt={alt} />
+      {!isSlider && (
         <div className="meta">
           <h4>{props.title}</h4>
           <p>
