@@ -5,13 +5,14 @@ type Props = {
   movies: singleMovie[];
   index: number;
   setIndex: React.Dispatch<React.SetStateAction<number>>;
+  onSeeMore?: (id: string) => void;
 };
 
-const MoviesSlider = ({ movies, index, setIndex }: Props) => {
+const MoviesSlider = ({ movies, index, setIndex, onSeeMore }: Props) => {
   const moviesPerGroup = 4;
 
   const groupMovies = () => {
-    const groups = [];
+    const groups: singleMovie[][] = [];
     for (let i = 0; i < movies.length; i += moviesPerGroup) {
       groups.push(movies.slice(i, i + moviesPerGroup));
     }
@@ -37,7 +38,7 @@ const MoviesSlider = ({ movies, index, setIndex }: Props) => {
             <div
               key={i}
               className={`indicator-dot ${i === index ? "active" : ""}`}
-            ></div>
+            />
           ))}
         </div>
       </div>
@@ -56,11 +57,15 @@ const MoviesSlider = ({ movies, index, setIndex }: Props) => {
               <div className="slide" key={groupIndex}>
                 {group.map((movie) => (
                   <MovieCard
-                    key={movie.id + groupIndex}
+                    key={movie.id}
                     id={movie.id}
-                    thumbnail={movie.thumbnail}
                     image={movie.image}
-                    variant="slider"
+                    thumbnail={movie.thumbnail}
+                    title={movie.title}
+                    rating={Number(movie.rating)}
+                    year={Number(movie.year)}
+                    genre={movie.genre}
+                    onSeeMore={onSeeMore}
                   />
                 ))}
               </div>

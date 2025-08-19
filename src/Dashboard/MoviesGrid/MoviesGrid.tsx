@@ -3,27 +3,25 @@ import type { singleMovie } from "../../MoviesData/dataMovies";
 
 type Props = {
   movies: singleMovie[];
+  onSeeMore?: (id: string) => void;
 };
 
-const MoviesGrid = ({ movies }: Props) => {
+export default function MoviesGrid({ movies, onSeeMore }: Props) {
   return (
     <div className="movies-grid">
-      {movies.map((movie) => (
+      {movies.map((m) => (
         <MovieCard
-          variant="full"
-          id={movie.id}
-          image={movie.image}
-          thumbnail={movie.thumbnail}
-          title={movie.title}
-          rating={Number(movie.rating)}
-          year={Number(movie.year)}
-          genre={
-            Array.isArray(movie.genre) ? movie.genre.join(", ") : movie.genre
-          }
+          key={m.id}
+          id={m.id}
+          image={m.image}
+          thumbnail={m.thumbnail}
+          title={m.title}
+          rating={Number(m.rating)}
+          year={Number(m.year)}
+          genre={Array.isArray(m.genre) ? m.genre.join(", ") : m.genre}
+          onSeeMore={onSeeMore}
         />
       ))}
     </div>
   );
-};
-
-export default MoviesGrid;
+}

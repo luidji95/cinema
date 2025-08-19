@@ -1,51 +1,97 @@
-// src/Dashboard/MovieCard/MovieCard.tsx
-export type BaseCardProps = {
+import { useRef } from "react";
+import "./movieCard.css";
+
+export type MovieCardProps = {
   id: string;
   image: string; // full-res poster
-  thumbnail: string; // može ostati u tipu, ali ga ne koristimo
+  thumbnail?: string; // low-res kandidat (opciono)
+  title?: string;
+  rating?: number;
+  year?: number;
+  genre?: string | string[];
+  onSeeMore?: (id: string) => void;
 };
 
-export type MovieCardProps =
-  | ({ variant: "slider" } & BaseCardProps)
-  | ({
-      variant: "full";
-      title: string;
-      rating: number;
-      year: number;
-      genre: string | string[];
-    } & BaseCardProps);
+const MovieCard = ({
+  id,
+  image,
+  thumbnail,
+  title,
+  rating,
+  year,
+  genre,
+  onSeeMore,
+}: MovieCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
 
-const MovieCard = (props: MovieCardProps) => {
-  const isSlider = props.variant === "slider";
-  const alt = isSlider ? "Poster" : "title" in props ? props.title : "Poster";
+  const alt = title || "Poster";
+  const genreText = Array.isArray(genre) ? genre.join(", ") : genre;
 
-  // normalize genre (ako je niz)
-  const genreText =
-    "genre" in props
-      ? Array.isArray(props.genre)
-        ? props.genre.join(", ")
-        : props.genre
-      : undefined;
+  const handleMouseLeave = () => {
+    // UX: očisti fokus iz overlaya da se ne “lepi”
+    const active = document.activeElement as HTMLElement | null;
+    if (active && cardRef.current?.contains(active)) {
+      active.blur();
+    }
+  };
 
   return (
-    <div className={`movie-card ${isSlider ? "is-slider" : ""}`}>
+    <div ref={cardRef} className="movie-card" onMouseLeave={handleMouseLeave}>
       <img
-        src={props.image}
+        src={image}
+        srcSet={thumbnail ? `${thumbnail} 200w, ${image} 1200w` : undefined}
+        sizes="(max-width: 960px) 160px, 220px"
         alt={alt}
         loading="lazy"
         decoding="async"
-        {...(isSlider ? { fetchPriority: "high" as const } : {})}
+        fetchPriority="high"
       />
 
-      {!isSlider && "title" in props && (
+      {(title || rating !== undefined || year !== undefined || genreText) && (
         <div className="meta">
-          <h4 className="title">{props.title}</h4>
+          {title && <h4 className="title">{title}</h4>}
           <p className="sub">
-            {props.year} • ⭐ {props.rating}
+            {year !== undefined ? `${year}` : ""}
+            {rating !== undefined ? ` • ⭐ ${rating}` : ""}
             {genreText ? ` • ${genreText}` : ""}
           </p>
         </div>
       )}
+
+      {/* Overlay sa flex kolonom (Bookmark + See more) */}
+      <div className="overlay overlay--center">
+        <div className="overlay-actions">
+          <button
+            className="btn-circle bookmark"
+            aria-label="Bookmark"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              style={{ display: "block" }}
+              aria-hidden="true"
+            >
+              <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18l-7-5-7 5V4z" />
+            </svg>
+          </button>
+
+          <button
+            className="btn-pill see-more"
+            aria-label={title ? `See more about ${title}` : "See more"}
+            onClick={(e) => {
+              e.stopPropagation();
+              (e.currentTarget as HTMLButtonElement).blur();
+              onSeeMore?.(id);
+            }}
+          >
+            See more
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
