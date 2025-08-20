@@ -1,70 +1,50 @@
-.search-bar-container {
+.searchbar {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background-color: #161d2f;
+  background: #1a1f29;
+  border: 1px solid #2c3342;
   border-radius: 10px;
-  max-width: 1200px;
-  margin-right: 20%;
-  margin-left: 20%;
-  margin-top: 70px;
-  margin-bottom: 70px;
-}
-
-.search-input {
-  flex: 1;
-  max-width: 300px;
   padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  margin: 24px 0;
+  gap: 12px;
 }
 
-.right-side {
+.searchbar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e7ecf7;
+  font-size: 14px;
+}
+
+.searchbar input::placeholder {
+  color: #aab4c3;
+}
+
+.searchbar-icons {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
-.icon {
-  font-size: 20px;
+.icon-btn {
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  color: #e7ecf7;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.08s ease;
 }
 
-.dropdown-wrapper {
-  position: relative;
+.icon-btn:hover {
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.dropdown-toggle {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  list-style: none;
-  padding: 8px 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.dropdown-menu li {
-  padding: 8px 16px;
-  cursor: pointer;
-}
-
-.dropdown-menu li:hover {
-  background-color: #f5f5f5;
-}
-.icon {
-  font-size: 20px;
-  cursor: pointer;
-  color: white; /* Dodajemo belu boju za ikonice */
+.icon-btn:active {
+  transform: translateY(1px);
 }

@@ -3,8 +3,8 @@ import "./movieCard.css";
 
 export type MovieCardProps = {
   id: string;
-  image: string; // full-res poster
-  thumbnail?: string; // low-res kandidat (opciono)
+  image: string;
+  thumbnail?: string;
   title?: string;
   rating?: number;
   year?: number;
@@ -25,10 +25,19 @@ const MovieCard = ({
   const cardRef = useRef<HTMLDivElement>(null);
 
   const alt = title || "Poster";
-  const genreText = Array.isArray(genre) ? genre.join(", ") : genre;
+
+  //  Normalizacija žanra
+  const genreText =
+    typeof genre === "string"
+      ? genre
+          .replace(/[\[\]"]/g, "")
+          .replace(/,/g, ", ")
+          .trim()
+      : Array.isArray(genre)
+      ? genre.join(", ")
+      : "";
 
   const handleMouseLeave = () => {
-    // UX: očisti fokus iz overlaya da se ne “lepi”
     const active = document.activeElement as HTMLElement | null;
     if (active && cardRef.current?.contains(active)) {
       active.blur();
@@ -43,8 +52,6 @@ const MovieCard = ({
         sizes="(max-width: 960px) 160px, 220px"
         alt={alt}
         loading="lazy"
-        decoding="async"
-        fetchPriority="high"
       />
 
       {(title || rating !== undefined || year !== undefined || genreText) && (
@@ -58,7 +65,7 @@ const MovieCard = ({
         </div>
       )}
 
-      {/* Overlay sa flex kolonom (Bookmark + See more) */}
+      {/* Overlay */}
       <div className="overlay overlay--center">
         <div className="overlay-actions">
           <button
@@ -68,11 +75,10 @@ const MovieCard = ({
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
               width="18"
               height="18"
-              viewBox="0 0 24 24"
               fill="currentColor"
-              style={{ display: "block" }}
               aria-hidden="true"
             >
               <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18l-7-5-7 5V4z" />

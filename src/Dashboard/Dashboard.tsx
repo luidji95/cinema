@@ -4,12 +4,13 @@ import Navigation from "./Navigation/Navigation";
 import MoviesSlider from "./MoviesSlider";
 import MoviesSection from "./MoviesSection/MoviesSection";
 import type { singleMovie } from "../MoviesData/dataMovies";
-// import SearchBar from "./SearchBar/SearchBar";
+import SearchBar from "./SearchBar/SearchBar";
 
 const Dashboard = () => {
   const [trendingMovies, setTrendingMovies] = useState<singleMovie[]>([]);
   const [index, setIndex] = useState(0);
   const perPage = 12;
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchTrending = async () => {
@@ -33,6 +34,14 @@ const Dashboard = () => {
             setIndex={setIndex}
           />
         )}
+
+        {/*SEARCH BAR */}
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          onHomeClick={() => console.log("Home clicked")}
+          onBookmarksClick={() => console.log("Bookmarks clicked")}
+        />
 
         <MoviesSection perPage={perPage} />
       </div>

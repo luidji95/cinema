@@ -1,73 +1,62 @@
-// import { useState } from "react";
-// import { FaHome, FaBookmark } from "react-icons/fa";
-// import "./SearchBar.css";
-// // import { singleMovie } from "../../MoviesData/dataMovies";
+import "./searchBar.css";
 
-// const SearchBar = () => {
-//   const [query, setQuery] = useState("");
-//   const [dropdownOpen, setDropdownOpen] = useState(false);
-//   //   const [searchResults, setSearchResult] = useState<singleMovie[]>([]);
+type Props = {
+  value: string;
+  onChange: (val: string) => void;
+  onHomeClick?: () => void;
+  onBookmarksClick?: () => void;
+};
 
-//   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const searchTerm = e.target.value.toLowerCase();
-//     setQuery(searchTerm);
+const SearchBar = ({
+  value,
+  onChange,
+  onHomeClick,
+  onBookmarksClick,
+}: Props) => {
+  return (
+    <div className="searchbar">
+      {/*input */}
+      <input
+        type="text"
+        placeholder="Search movies..."
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
 
-//     if (searchTerm.length > 0) {
-//       const results = allMovies.filter(
-//         (movie) =>
-//           movie.title.toLowerCase().includes(searchTerm) ||
-//           (movie.genre && movie.genre.toLowerCase().includes(searchTerm))
-//       );
-//       setSearchResults(results);
-//     } else {
-//       setSearchResults([]);
-//     }
-//   };
+      {/*  ikonice */}
+      <div className="searchbar-icons">
+        <button className="icon-btn" aria-label="Home" onClick={onHomeClick}>
+          {/*  HOME */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="currentColor"
+          >
+            <path d="M12 3l9 8h-3v9h-12v-9h-3l9-8z" />
+          </svg>
+        </button>
 
-//   const debounce = (func: Function, delay: number) => {
-//     let timeoutId: NodeJS.Timeout;
-//     return (...args: any[]) => {
-//       clearTimeout(timeoutId);
-//       timeoutId = setTimeout(() => func(...args), delay);
-//     };
-//   };
+        <button
+          className="icon-btn"
+          aria-label="Bookmarks"
+          onClick={onBookmarksClick}
+        >
+          {/*  BOOKMARK */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="currentColor"
+          >
+            <path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18l-7-5-7 5V4z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
 
-//   const debouncedSearch = debounce(handleSearch, 300);
-
-//   return (
-//     <div className="search-bar-container">
-//       {/* Leva strana */}
-//       <input
-//         type="text"
-//         placeholder="Search..."
-//         className="search-input"
-//         value={query}
-//         onChange={debouncedSearch}
-//       />
-
-//       {/* Desna strana */}
-//       <div className="right-side">
-//         <div className="dropdown-wrapper">
-//           <button
-//             className="dropdown-toggle"
-//             onClick={() => setDropdownOpen(!dropdownOpen)}
-//           >
-//             Menu ▾
-//           </button>
-//           {dropdownOpen && (
-//             <ul className="dropdown-menu">
-//               <li>Profile</li>
-//               <li>Settings</li>
-//               <li>Logout</li>
-//             </ul>
-//           )}
-//         </div>
-
-//         <FaHome className="icon" title="Home" />
-//         <FaBookmark className="icon" title="Bookmarks" />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default SearchBar;
+export default SearchBar;

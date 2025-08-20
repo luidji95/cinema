@@ -132,3 +132,27 @@
 .movies-main .grid-wrapper {
   min-height: 60vh;
 }
+/* postojeći grid; dodaj varijantu za 3 kolone */
+.movies-row.three-cols {
+  display: grid;
+  grid-template-columns: 140px 1fr 200px; /* levo paginacija, sredina grid, desno žanrovi */
+  column-gap: 24px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+/* već imaš .movies-side (levo) — koristi se za paginaciju */
+/* .movies-main je centar (grid) */
+/* desni sidebar je .genres-side (u svom CSS fajlu gore) */
+
+@media (max-width: 1024px) {
+  .movies-row.three-cols {
+    grid-template-columns: 120px 1fr; /* sakrij/izbaci desni sidebar ispod ili iznad po želji */
+  }
+  /* Ako želiš da žanrovi padnu ispod grida na užim ekranima: */
+  .genres-side {
+    grid-column: 1 / -1;
+    position: static;
+    margin-top: 12px;
+  }
+}
