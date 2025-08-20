@@ -1,13 +1,10 @@
-/* Container već koristiš u Dashboard-u (oko Slidera i Movies): .container */
-
-/* ===== MoviesSection layout: GRID levo + PAGINACIJA desno ===== */
 :root {
   --nav-h: 90px;
-} /* visina fiksne navigacije, prilagodi po potrebi */
+}
 
 .movies-row {
   display: grid;
-  grid-template-columns: 120px 1fr; /* prvo LEVO paginacija, onda DESNO grid */
+  grid-template-columns: 120px 1fr;
   column-gap: 24px;
   align-items: start;
   margin-top: 24px;
@@ -26,7 +23,6 @@
   scroll-margin-top: var(--nav-h);
 }
 
-/* ===== Pagination (vertikalna, mala) – ako već nemaš u pagination.css, može i ovde ===== */
 .pagination {
   display: flex;
   gap: 6px;
@@ -72,10 +68,9 @@
   box-shadow: 0 0 0 3px rgba(120, 180, 255, 0.25);
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 960px) {
   .movies-row {
-    grid-template-columns: 1fr; /* paginacija ispod grida */
+    grid-template-columns: 1fr;
     row-gap: 16px;
   }
   .movies-side {
@@ -92,29 +87,26 @@
     gap: 8px;
   }
 }
-/* Wrapper oko grida – drži visinu, omogućava overlay */
+
 .grid-wrapper {
   position: relative;
-  /* suptilna tranzicija ne-providnosti za "smooth" utisak */
+
   transition: opacity 160ms ease;
 }
 
-/* dok učitava: malo zatamni grid (ostaje na mestu) */
 .grid-wrapper.is-loading {
   opacity: 0.75;
 }
 
-/* Overlay spiner – preko grida */
 .grid-overlay {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  backdrop-filter: blur(1px); /* suptilno; može i bez */
-  pointer-events: none; /* da klikovi prođu ako treba */
+  backdrop-filter: blur(1px);
+  pointer-events: none;
 }
 
-/* Spiner (čist CSS) */
 .spinner {
   width: 36px;
   height: 36px;
@@ -132,24 +124,20 @@
 .movies-main .grid-wrapper {
   min-height: 60vh;
 }
-/* postojeći grid; dodaj varijantu za 3 kolone */
+
 .movies-row.three-cols {
   display: grid;
-  grid-template-columns: 140px 1fr 200px; /* levo paginacija, sredina grid, desno žanrovi */
+  grid-template-columns: 140px 1fr 200px;
   column-gap: 24px;
   align-items: start;
   margin-top: 24px;
 }
 
-/* već imaš .movies-side (levo) — koristi se za paginaciju */
-/* .movies-main je centar (grid) */
-/* desni sidebar je .genres-side (u svom CSS fajlu gore) */
-
 @media (max-width: 1024px) {
   .movies-row.three-cols {
-    grid-template-columns: 120px 1fr; /* sakrij/izbaci desni sidebar ispod ili iznad po želji */
+    grid-template-columns: 120px 1fr;
   }
-  /* Ako želiš da žanrovi padnu ispod grida na užim ekranima: */
+
   .genres-side {
     grid-column: 1 / -1;
     position: static;

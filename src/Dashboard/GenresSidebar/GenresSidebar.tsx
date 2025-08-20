@@ -1,8 +1,8 @@
-import "./genresSidebar.css";
+import "./genressidebar.css";
 
 type Props = {
-  genres: string[]; // npr. ["All", "Drama", "Comedy", ...]
-  selected?: string | null; // null = All
+  genres: string[];
+  selected?: string | null;
   onSelect?: (genre: string | null) => void;
 };
 
