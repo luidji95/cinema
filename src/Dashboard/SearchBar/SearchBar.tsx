@@ -1,4 +1,4 @@
-import "./searchBar.css";
+import "./searchbar.css";
 
 type Props = {
   value: string;
