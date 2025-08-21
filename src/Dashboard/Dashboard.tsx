@@ -25,7 +25,6 @@ const Dashboard = () => {
     <div className="page">
       <Navigation />
 
-      {/* zajednički container drži i slider i movies; poravnanje je identično */}
       <div className="container">
         {trendingMovies.length > 0 && (
           <MoviesSlider
@@ -35,7 +34,6 @@ const Dashboard = () => {
           />
         )}
 
-        {/*SEARCH BAR */}
         <SearchBar
           value={search}
           onChange={setSearch}
@@ -43,7 +41,7 @@ const Dashboard = () => {
           onBookmarksClick={() => console.log("Bookmarks clicked")}
         />
 
-        <MoviesSection perPage={perPage} />
+        <MoviesSection perPage={perPage} searchTerm={search} />
       </div>
     </div>
   );

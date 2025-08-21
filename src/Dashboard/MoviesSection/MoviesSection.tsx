@@ -7,21 +7,26 @@ import type { singleMovie } from "../../MoviesData/dataMovies";
 import { normalizeGenre } from "../../utils/normalizeGenres";
 import "./moviesSection.css";
 
-type Props = { perPage: number };
+type Props = {
+  perPage: number;
+  searchTerm?: string;
+};
 
-const MoviesSection = ({ perPage }: Props) => {
+const MoviesSection = ({ perPage, searchTerm = "" }: Props) => {
   const [movies, setMovies] = useState<singleMovie[]>([]);
   const [totalMovies, setTotalMovies] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  // GLOBALNI žanrovi (učitavaju se jednom iz cele baze)
   const [allGenres, setAllGenres] = useState<string[]>([]);
-
+  // Globalni filter po žanru
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
   const totalPages = Math.ceil(totalMovies / perPage);
   const topAnchorRef = useRef<HTMLDivElement>(null);
 
+  // --- 1) Učitaj sve žanrove jednom ---
   useEffect(() => {
     const fetchAllGenres = async () => {
       const { data, error } = await supabase.from("movies").select("genre");
@@ -38,6 +43,12 @@ const MoviesSection = ({ perPage }: Props) => {
     fetchAllGenres();
   }, []);
 
+  // --- 2) Resetuj paginaciju kada se promeni search ili žanr ---
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedGenre]);
+
+  // --- 3) Učitaj filmove - paging + filteri ---
   useEffect(() => {
     let cancel = false;
 
@@ -49,8 +60,15 @@ const MoviesSection = ({ perPage }: Props) => {
 
       let query = supabase.from("movies").select("*", { count: "exact" });
 
+      // Filter po žanru (globalan)
       if (selectedGenre && selectedGenre !== "All") {
         query = query.ilike("genre", `%${selectedGenre}%`);
+      }
+
+      //  Globalni SEARCH (preko cele baze): pretraži title (i po želji genre)
+      const term = searchTerm.trim();
+      if (term) {
+        query = query.or(`title.ilike.%${term}%,genre.ilike.%${term}%`);
       }
 
       const { data, count, error } = await query.range(from, to);
@@ -67,8 +85,9 @@ const MoviesSection = ({ perPage }: Props) => {
     return () => {
       cancel = true;
     };
-  }, [currentPage, perPage, selectedGenre]);
+  }, [currentPage, perPage, selectedGenre, searchTerm]);
 
+  //  Smooth scroll posle svakog učitavanja ---
   useEffect(() => {
     if (!loading && topAnchorRef.current) {
       requestAnimationFrame(() => {
@@ -93,7 +112,7 @@ const MoviesSection = ({ perPage }: Props) => {
         />
       </aside>
 
-      {/* grid */}
+      {/*  grid */}
       <div className="movies-main">
         <div ref={topAnchorRef} className="scroll-anchor" />
         <div className={`grid-wrapper ${loading ? "is-loading" : ""}`}>
@@ -106,14 +125,12 @@ const MoviesSection = ({ perPage }: Props) => {
         </div>
       </div>
 
-      {/*  žanrovi iz baze  */}
+      {/*  SVI žanrovi iz baze */}
       <GenresSidebar
         genres={allGenres}
         selected={selectedGenre}
         onSelect={(g) => {
-          setSelectedGenre((prev) => (prev === g ? null : g));
-
-          setCurrentPage(1);
+          setSelectedGenre((prev) => (prev === g ? null : g)); // toggle
         }}
       />
     </section>
