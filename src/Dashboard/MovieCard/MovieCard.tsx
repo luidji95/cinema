@@ -10,6 +10,9 @@ export type MovieCardProps = {
   year?: number;
   genre?: string | string[];
   onSeeMore?: (id: string) => void;
+
+  isBookmarked?: boolean;
+  onToggleBookmark?: (id: string) => void;
 };
 
 const MovieCard = ({
@@ -21,17 +24,17 @@ const MovieCard = ({
   year,
   genre,
   onSeeMore,
+  isBookmarked = false,
+  onToggleBookmark,
 }: MovieCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const alt = title ? `${title} poster` : "Movie poster";
 
-  const alt = title || "Poster";
-
-  //  Normalizacija žanra
   const genreText =
     typeof genre === "string"
       ? genre
           .replace(/[\[\]"]/g, "")
-          .replace(/,/g, ", ")
+          .replace(/\s*,\s*/g, ", ")
           .trim()
       : Array.isArray(genre)
       ? genre.join(", ")
@@ -39,9 +42,7 @@ const MovieCard = ({
 
   const handleMouseLeave = () => {
     const active = document.activeElement as HTMLElement | null;
-    if (active && cardRef.current?.contains(active)) {
-      active.blur();
-    }
+    if (active && cardRef.current?.contains(active)) active.blur();
   };
 
   return (
@@ -52,6 +53,7 @@ const MovieCard = ({
         sizes="(max-width: 960px) 160px, 220px"
         alt={alt}
         loading="lazy"
+        decoding="async"
       />
 
       {(title || rating !== undefined || year !== undefined || genreText) && (
@@ -65,13 +67,17 @@ const MovieCard = ({
         </div>
       )}
 
-      {/* Overlay */}
       <div className="overlay overlay--center">
         <div className="overlay-actions">
           <button
-            className="btn-circle bookmark"
-            aria-label="Bookmark"
-            onClick={(e) => e.stopPropagation()}
+            className={`btn-circle bookmark ${isBookmarked ? "active" : ""}`}
+            type="button"
+            aria-pressed={isBookmarked}
+            aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleBookmark?.(id);
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -87,6 +93,7 @@ const MovieCard = ({
 
           <button
             className="btn-pill see-more"
+            type="button"
             aria-label={title ? `See more about ${title}` : "See more"}
             onClick={(e) => {
               e.stopPropagation();

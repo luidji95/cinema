@@ -11,20 +11,19 @@ const Dashboard = () => {
   const [index, setIndex] = useState(0);
   const perPage = 12;
   const [search, setSearch] = useState("");
+  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
 
   useEffect(() => {
     const fetchTrending = async () => {
       const { data } = await supabase.from("trending_movies").select("*");
       setTrendingMovies(data || []);
     };
-
     fetchTrending();
   }, []);
 
   return (
     <div className="page">
       <Navigation />
-
       <div className="container">
         {trendingMovies.length > 0 && (
           <MoviesSlider
@@ -37,11 +36,15 @@ const Dashboard = () => {
         <SearchBar
           value={search}
           onChange={setSearch}
-          onHomeClick={() => console.log("Home clicked")}
-          onBookmarksClick={() => console.log("Bookmarks clicked")}
+          onHomeClick={() => setShowBookmarksOnly(false)}
+          onBookmarksClick={() => setShowBookmarksOnly((prev) => !prev)}
         />
 
-        <MoviesSection perPage={perPage} searchTerm={search} />
+        <MoviesSection
+          perPage={perPage}
+          searchTerm={search}
+          showBookmarksOnly={showBookmarksOnly}
+        />
       </div>
     </div>
   );

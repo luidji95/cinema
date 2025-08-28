@@ -1,5 +1,6 @@
 /* ====== BAZA KARTICE ====== */
 .movie-card {
+  max-height: 350px;
   position: relative;
   border-radius: 12px;
   overflow: hidden;
@@ -145,4 +146,11 @@
     visibility: visible;
     pointer-events: auto;
   }
+}
+
+/* movieCard.css */
+.btn-circle.bookmark.active {
+  background: var(--accent, #ffcc00);
+  color: #111;
+  outline: 2px solid var(--accent, #ffcc00);
 }

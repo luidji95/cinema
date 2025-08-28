@@ -5,28 +5,56 @@ import Pagination from "../Pagination/pagination";
 import GenresSidebar from "../GenresSidebar/GenresSidebar";
 import type { singleMovie } from "../../MoviesData/dataMovies";
 import { normalizeGenre } from "../../utils/normalizeGenres";
+import { getMyBookmarks, toggleBookmark } from "../../Api/bookmarks";
 import "./moviesSection.css";
 
 type Props = {
   perPage: number;
   searchTerm?: string;
+  showBookmarksOnly?: boolean;
 };
 
-const MoviesSection = ({ perPage, searchTerm = "" }: Props) => {
+const MoviesSection = ({
+  perPage,
+  searchTerm = "",
+  showBookmarksOnly = false,
+}: Props) => {
   const [movies, setMovies] = useState<singleMovie[]>([]);
   const [totalMovies, setTotalMovies] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // GLOBALNI žanrovi (učitavaju se jednom iz cele baze)
+  // GLOBALNI žanrovi (učitavaju se jednom)
   const [allGenres, setAllGenres] = useState<string[]>([]);
   // Globalni filter po žanru
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
+  // ⬇️ NOVO: ID-jevi mojih bookmarkovanih filmova
+  const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
+
   const totalPages = Math.ceil(totalMovies / perPage);
   const topAnchorRef = useRef<HTMLDivElement>(null);
 
-  // --- 1) Učitaj sve žanrove jednom ---
+  // 0) Učitaj bookmarkove korisnika (mount + na auth promenu)
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const ids = await getMyBookmarks();
+        if (!cancelled) setBookmarkedIds(new Set(ids));
+      } catch (e) {
+        console.error("fetch bookmarks error:", e);
+      }
+    };
+    load();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => load());
+    return () => {
+      cancelled = true;
+      sub?.subscription?.unsubscribe?.();
+    };
+  }, []);
+
+  // 1) Učitaj sve žanrove jednom
   useEffect(() => {
     const fetchAllGenres = async () => {
       const { data, error } = await supabase.from("movies").select("genre");
@@ -43,32 +71,46 @@ const MoviesSection = ({ perPage, searchTerm = "" }: Props) => {
     fetchAllGenres();
   }, []);
 
-  // --- 2) Resetuj paginaciju kada se promeni search ili žanr ---
+  // 2) Resetuj page na promenu search/žanra/flag-a “bookmarks only”
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedGenre]);
+  }, [searchTerm, selectedGenre, showBookmarksOnly]);
 
-  // --- 3) Učitaj filmove - paging + filteri ---
+  // 3) Fetch filmova (paging + filters + bookmarks-only)
   useEffect(() => {
     let cancel = false;
 
     const fetchMovies = async () => {
       setLoading(true);
 
+      // Ako tražimo SAMO bookmarkove a nema nijednog — skrati put (nema API)
+      if (showBookmarksOnly && bookmarkedIds.size === 0) {
+        if (!cancel) {
+          setMovies([]);
+          setTotalMovies(0);
+          setLoading(false);
+        }
+        return;
+      }
+
       const from = (currentPage - 1) * perPage;
       const to = from + perPage - 1;
 
       let query = supabase.from("movies").select("*", { count: "exact" });
 
-      // Filter po žanru (globalan)
       if (selectedGenre && selectedGenre !== "All") {
         query = query.ilike("genre", `%${selectedGenre}%`);
       }
 
-      //  Globalni SEARCH (preko cele baze): pretraži title (i po želji genre)
       const term = searchTerm.trim();
       if (term) {
         query = query.or(`title.ilike.%${term}%,genre.ilike.%${term}%`);
+      }
+
+      // ⬇️ NOVO: ograniči na moje bookmarkove (server-side) kad je flag uključen
+      if (showBookmarksOnly) {
+        const ids = Array.from(bookmarkedIds);
+        query = query.in("id", ids);
       }
 
       const { data, count, error } = await query.range(from, to);
@@ -82,12 +124,17 @@ const MoviesSection = ({ perPage, searchTerm = "" }: Props) => {
     };
 
     fetchMovies();
-    return () => {
-      cancel = true;
-    };
-  }, [currentPage, perPage, selectedGenre, searchTerm]);
+    // uključimo bookmarkedIds u deps samo kada filtriramo po bookmarkovima
+  }, [
+    currentPage,
+    perPage,
+    selectedGenre,
+    searchTerm,
+    showBookmarksOnly,
+    bookmarkedIds,
+  ]);
 
-  //  Smooth scroll posle svakog učitavanja ---
+  // 4) Smooth scroll posle učitavanja
   useEffect(() => {
     if (!loading && topAnchorRef.current) {
       requestAnimationFrame(() => {
@@ -99,9 +146,30 @@ const MoviesSection = ({ perPage, searchTerm = "" }: Props) => {
     }
   }, [loading]);
 
+  // Handler: optimistički toggle + API
+  const handleToggleBookmark = async (id: string) => {
+    const next = !bookmarkedIds.has(id);
+
+    setBookmarkedIds((prev) => {
+      const s = new Set(prev);
+      next ? s.add(id) : s.delete(id);
+      return s;
+    });
+
+    try {
+      await toggleBookmark(id);
+    } catch (e) {
+      setBookmarkedIds((prev) => {
+        const s = new Set(prev);
+        next ? s.delete(id) : s.add(id);
+        return s;
+      });
+      console.error("toggle bookmark error:", e);
+    }
+  };
+
   return (
     <section className="movies-row three-cols">
-      {/*  paginacija */}
       <aside className="movies-side">
         <Pagination
           orientation="vertical"
@@ -112,11 +180,14 @@ const MoviesSection = ({ perPage, searchTerm = "" }: Props) => {
         />
       </aside>
 
-      {/*  grid */}
       <div className="movies-main">
         <div ref={topAnchorRef} className="scroll-anchor" />
         <div className={`grid-wrapper ${loading ? "is-loading" : ""}`}>
-          <MoviesGrid movies={movies} />
+          <MoviesGrid
+            movies={movies}
+            bookmarkedIds={bookmarkedIds}
+            onToggleBookmark={handleToggleBookmark}
+          />
           {loading && (
             <div className="grid-overlay" aria-hidden="true">
               <div className="spinner" />
@@ -125,12 +196,11 @@ const MoviesSection = ({ perPage, searchTerm = "" }: Props) => {
         </div>
       </div>
 
-      {/*  SVI žanrovi iz baze */}
       <GenresSidebar
         genres={allGenres}
         selected={selectedGenre}
         onSelect={(g) => {
-          setSelectedGenre((prev) => (prev === g ? null : g)); // toggle
+          setSelectedGenre((prev) => (prev === g ? null : g));
         }}
       />
     </section>

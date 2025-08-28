@@ -3,10 +3,11 @@ import type { singleMovie } from "../../MoviesData/dataMovies";
 
 type Props = {
   movies: singleMovie[];
-  onSeeMore?: (id: string) => void;
+  bookmarkedIds?: Set<string>;
+  onToggleBookmark?: (id: string) => void;
 };
 
-export default function MoviesGrid({ movies, onSeeMore }: Props) {
+const MoviesGrid = ({ movies, bookmarkedIds, onToggleBookmark }: Props) => {
   return (
     <div className="movies-grid">
       {movies.map((m) => (
@@ -18,10 +19,13 @@ export default function MoviesGrid({ movies, onSeeMore }: Props) {
           title={m.title}
           rating={Number(m.rating)}
           year={Number(m.year)}
-          genre={Array.isArray(m.genre) ? m.genre.join(", ") : m.genre}
-          onSeeMore={onSeeMore}
+          genre={m.genre}
+          isBookmarked={bookmarkedIds?.has(m.id)}
+          onToggleBookmark={onToggleBookmark}
         />
       ))}
     </div>
   );
-}
+};
+
+export default MoviesGrid;
